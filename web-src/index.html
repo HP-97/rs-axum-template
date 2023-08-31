@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/output.css">
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.4"
+        integrity="sha384-zUfuhFKKZCbHTY6aRR46gxiqszMk5tcHjsVFxnUo8VMus4kHGVdIYVbOYYNlKmHV"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
+    <title>My New Website</title>
+</head>
+
+<body>
+    <header>
+        <h1>Hello, world</h1>
+        <p>Welcome to my website!</p>
+    </header>
+
+    <main>
+        <p>This is my new website and it's using Simple.css. It's really cool. If you want to use it too, you can <a
+                href="https://simplecss.org">visit their site</a>.</p>
+        <button class="transition-all" _="on click toggle .bg-indigo-500 .border-indigo-500 on me">TEST</button>
+        <div hx-get="/example">Get Some Html</div>
+        <div hx-get="/get_distro">distro TEST</div>
+        <!-- <div hx-get="/get_datetime" hx-trigger="every 1s">get date TEST</div> -->
+        <div hx-ext="ws" ws-connect="/get_datetime_realtime">
+            <div id="date"></div>
+        </div>
+        <div hx-ext="sse" sse-connect="/get_datetime_realtime_sse" sse-swap="curDate">Date/Time updates pending ...</div>
+    </main>
+
+    <footer>
+        <p>HP's website.</p>
+    </footer>
+</body>
+
+</html>
