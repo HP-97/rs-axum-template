@@ -13,7 +13,7 @@ pub fn fron_public_route() -> Router {
 async fn handle_error() -> (StatusCode, &'static str) {
     (
         StatusCode::INTERNAL_SERVER_ERROR,
-        "Something went wrong access static files...",
+        "Something went wrong accessing static files...",
     )
 }
 

@@ -11,10 +11,9 @@ axum = { version = "0.6.20", features = ["macros", "ws"] }
 axum-login = "0.6.0"
 clap = { version = "4.3.24", features = ["derive"] }
 config = "0.13.3"
-dioxus = "0.4.0"
-dioxus-ssr = "0.4.0"
 dotenvy = "0.15.7"
 futures = "0.3.28"
+maud = "0.25.0"
 serde = { version = "1.0.186", features = ["derive"] }
 thiserror = "1.0.47"
 tokio = { version = "1.32.0", features = ["full"] }

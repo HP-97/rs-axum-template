@@ -10,19 +10,16 @@ use axum::{
 };
 
 use axum::response::sse::{Event, KeepAlive, Sse};
-use dioxus::prelude::*;
 use futures::stream::Stream;
+use maud::html;
 
 use crate::AppState;
 
 pub fn example() -> Html<String> {
-    let test = dioxus_ssr::render_lazy(rsx! {
-        p {
-            "clas": "hey",
-            "hej!"
-        }
-    });
-    Html(test)
+    let markup = html!{
+        p { "hello world!"}
+    };
+    Html(markup.into_string())
 }
 
 pub fn get_distro() -> Html<String> {
@@ -33,24 +30,31 @@ pub fn get_distro() -> Html<String> {
         .stdout;
     let distro_info = std::str::from_utf8(&cmd_stdout).unwrap().trim().split("\n");
 
-    let doc = dioxus_ssr::render_lazy(rsx! {
+    let doc = html! {
         div {
-            distro_info.map(|i| rsx!{ p {"{i}"} })
+            @for line in distro_info {
+                p { (line) }
+            }
         }
-    });
-    Html(doc.to_string())
+    };
+    // let doc = dioxus_ssr::render_lazy(rsx! {
+    //     div {
+    //         distro_info.map(|i| rsx!{ p {"{i}"} })
+    //     }
+    // });
+    Html(doc.into_string())
 }
 
 pub async fn get_date(State(state): State<AppState>) -> Html<String> {
     let mut rx = state.tx.subscribe();
 
     while let Ok(date) = rx.recv().await {
-        let doc = dioxus_ssr::render_lazy(rsx!{
+        let doc = dioxus_ssr::render_lazy(rsx! {
             p {"{date}"}
         });
         return Html(doc);
     }
-    let doc = dioxus_ssr::render_lazy(rsx!{
+    let doc = dioxus_ssr::render_lazy(rsx! {
         p {"failed to retrieve data"}
     });
     Html(doc)
@@ -67,7 +71,7 @@ async fn get_date_realtime_stream(app_state: AppState, mut ws: WebSocket) {
     let mut rx = app_state.tx.subscribe();
 
     while let Ok(msg) = rx.recv().await {
-        let test = dioxus_ssr::render_lazy(rsx!{
+        let test = dioxus_ssr::render_lazy(rsx! {
             div {
                 id: "date",
                 "The current date/time (using Dioxus SSR) is {msg}"
